@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok authorization — Dancing Dead Uploader</title>
+<style>
+  body{margin:0;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:#0d0d10;color:#eaeaea;
+       display:flex;min-height:100vh;align-items:center;justify-content:center}
+  main{padding:2rem;max-width:36rem;text-align:center}
+  h1{font-size:1.2rem}
+  code{display:block;background:#1a1a20;border:1px solid #333;border-radius:8px;padding:1rem;
+       margin:1rem 0;word-break:break-all;font-size:.95rem;color:#7ee787}
+  button{background:#e05252;color:#fff;border:0;border-radius:8px;padding:.7rem 1.4rem;
+         font-size:1rem;cursor:pointer}
+  p{color:#9a9aa2;line-height:1.6}
+  .err{color:#ff7b72}
+</style>
+</head>
+<body>
+<main>
+  <h1>Dancing Dead Uploader — TikTok authorization</h1>
+  <div id="out"></div>
+  <script>
+    const q = new URLSearchParams(location.search);
+    const out = document.getElementById("out");
+    if (q.get("error")) {
+      out.innerHTML = '<p class="err">Authorization failed: '
+        + (q.get("error_description") || q.get("error")) + '</p>';
+    } else if (q.get("code")) {
+      out.innerHTML = '<p>Authorization succeeded. Copy this code and paste it '
+        + 'back into the terminal:</p><code id="c"></code>'
+        + '<button onclick="navigator.clipboard.writeText(document.getElementById(\'c\').textContent)'
+        + '.then(()=>this.textContent=\'Copied ✓\')">Copy code</button>'
+        + '<p>You can close this tab afterwards.</p>';
+      document.getElementById("c").textContent = q.get("code");
+    } else {
+      out.innerHTML = '<p>Nothing to see here — this page only receives TikTok OAuth redirects.</p>';
+    }
+  </script>
+</main>
+</body>
+</html>
